@@ -1,0 +1,30 @@
+const SECRET_KEY = "Enter Your Secret Key";
+const MAX_TOKENS = 200;
+
+/**
+ * Completes your prompt with GPT-3
+ *
+ * @param {string} prompt Prompt
+ * @param {number} temperature (Optional) Temperature. 1 is super creative while 0 is very exact and precise. Defaults to 0.4.
+ * @param {string} model (Optional) GPT-3 Model to use. Defaults to "text-davinci-003".
+ * @return Completion returned by GPT-3
+ * @customfunction
+ */
+function AI(prompt, temperature = 0.4, model = "text-davinci-003") {
+  const url = "https://api.openai.com/v1/completions";
+  const payload = {
+    model: model,
+    prompt: prompt,
+    temperature: temperature,
+    max_tokens: MAX_TOKENS,
+  };
+  const options = {
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + SECRET_KEY },
+    payload: JSON.stringify(payload),
+  };
+  const res = JSON.parse(UrlFetchApp.fetch(url, options).getContentText());
+  return res.choices[0].text.trim();
+}
+
+
